@@ -18,23 +18,30 @@ window.addEventListener("load", function() {
          alert("All fields are required!");
       } else if (!isNaN(pilotName.value) || !isNaN(copilotName.value) || isNaN(fuelLevel.value) || isNaN(cargoMass.value)) {
          alert("Make sure to enter valid information for each field!");
-      } else if (fuelLevel.value < 10000 || cargoMass.value > 10000) {
-         launchStatus.innerHTML = `Shuttle not ready for launch`;
-         launchStatus.style.color = "red";
-         pilotStatus.innerHTML = `Pilot ${pilotName.value} is ready for launch`;
-         copilotStatus.innerHTML = `Co-pilot ${copilotName.value} is ready for launch`;
-         for (let i = 0; i < fuelAndCargo.length; i++) {
-            if (fuelLevel.value < 10000) {
-               fuelStatus.innerHTML = `Fuel level too low for launch`;
-            }
-            if (cargoMass.value > 10000) {
-               cargoStatus.innerHTML = `Cargo mass too high for launch`;
+      } else {
+         if (fuelLevel.value < 10000 || cargoMass.value > 10000) {
+            launchStatus.innerHTML = `Shuttle not ready for launch`;
+            launchStatus.style.color = "red";
+            pilotStatus.innerHTML = `Pilot ${pilotName.value} is ready for launch`;
+            copilotStatus.innerHTML = `Co-pilot ${copilotName.value} is ready for launch`;
+            for (let i = 0; i < fuelAndCargo.length; i++) {
+               if (fuelLevel.value < 10000) {
+                  fuelStatus.innerHTML = `Fuel level too low for launch`;
+               } else {
+                  fuelStatus.innerHTML = `Fuel level high enough for launch`;
+               }
+               if (cargoMass.value > 10000) {
+                  cargoStatus.innerHTML = `Cargo mass too high for launch`;
+               } else {
+                  cargoStatus.innerHTML = `Cargo mass low enough for launch`;
+               }
             }
             faultyItems.style.visibility = "visible";
+         } else {
+            launchStatus.innerHTML = `Shuttle is ready for launch`;
+            launchStatus.style.color = "green";
+            faultyItems.style.visibility = "hidden"; 
          }
-      } else {
-         launchStatus.innerHTML = `Shuttle is ready for launch`;
-         launchStatus.style.color = "green"; 
       }
    });
    fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response) {
